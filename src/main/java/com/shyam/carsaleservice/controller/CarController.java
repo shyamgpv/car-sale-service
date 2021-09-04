@@ -23,6 +23,6 @@ public class CarController {
 
     @GetMapping("/getListing/{carID}")
     public Car getCar(@PathVariable Long carID){
-        return carRepository.getById(carID);
+        return carRepository.findCarById(carID);
     }
 }
