@@ -3,16 +3,18 @@ package com.shyam.carsaleservice.controller;
 import com.shyam.carsaleservice.entities.Car;
 import com.shyam.carsaleservice.repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/car")
 public class CarController {
     @Autowired
     private CarRepository carRepository;
+
+    @GetMapping("/message")
+    public String message(){
+        return "Successfull and Changed";
+    }
 
     @PostMapping("/addListing")
     public Car addCar(@RequestBody Car car){
