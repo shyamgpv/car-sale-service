@@ -11,7 +11,7 @@ public class CarSaleServiceApplication {
 
     @GetMapping("/message")
     public String message(){
-        return "Successfull";
+        return "Successfull and Changed";
     }
     public static void main(String[] args) {
         SpringApplication.run(CarSaleServiceApplication.class, args);
