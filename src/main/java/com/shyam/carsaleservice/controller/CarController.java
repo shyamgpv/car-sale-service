@@ -13,7 +13,7 @@ public class CarController {
 
     @GetMapping("/message")
     public String message(){
-        return "Successfull and Changed";
+        return "Successfull test 2";
     }
 
     @PostMapping("/addListing")
