@@ -21,8 +21,8 @@ public class CarController {
         return carRepository.save(car);
     }
 
-    @PostMapping("/getListing")
-    public Car getCar(@RequestBody Long carID){
+    @GetMapping("/getListing")
+    public Car getCar(@PathVariable Long carID){
         return carRepository.getById(carID);
     }
 }
