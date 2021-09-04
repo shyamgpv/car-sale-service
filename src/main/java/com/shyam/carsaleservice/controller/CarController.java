@@ -13,7 +13,7 @@ public class CarController {
 
     @GetMapping("/message")
     public String message(){
-        return "Successfull test 2";
+        return "Successfull test 3";
     }
 
     @PostMapping("/addListing")
@@ -21,7 +21,7 @@ public class CarController {
         return carRepository.save(car);
     }
 
-    @GetMapping("/getListing")
+    @GetMapping("/getListing/{carID}")
     public Car getCar(@PathVariable Long carID){
         return carRepository.getById(carID);
     }
