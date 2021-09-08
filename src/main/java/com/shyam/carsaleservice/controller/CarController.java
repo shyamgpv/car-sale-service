@@ -18,7 +18,14 @@ public class CarController {
     public String message(){
         return "Successful test 4";
     }
-
+    @GetMapping("/user")
+    public String userMessage(){
+        return "user logged in";
+    }
+    @GetMapping("/admin")
+    public String adminMessage(){
+        return "admin logged in";
+    }
     @PostMapping("/addListing")
     public Car addCar(@RequestBody Car car){
         return carServices.addCar(car);
