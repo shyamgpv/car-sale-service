@@ -2,7 +2,11 @@ package com.shyam.carsaleservice.controller;
 
 import com.shyam.carsaleservice.entities.Car;
 import com.shyam.carsaleservice.services.CarServices;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +19,7 @@ import java.util.List;
 @Validated
 @RequestMapping("/car")
 public class CarController {
+    Logger logger = LoggerFactory.getLogger(CarController.class);
     @Autowired
     private CarServices carServices;
 
@@ -24,6 +29,11 @@ public class CarController {
     }
     @GetMapping("/user")
     public String userMessage(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); //get authentication details
+        if(authentication != null){
+            //log user name
+            logger.info("User "+authentication.getName()+" logged in");
+        }
         return "user logged in";
     }
     @GetMapping("/admin")
@@ -32,10 +42,12 @@ public class CarController {
     }
     @PostMapping("/addListing")
     public Car addCar(@Valid @RequestBody Car car){
+        logger.info("New Listing "+car.getYear()+" "+car.getMake()+" "+car.getCarModel()+" added");
         return carServices.addCar(car);
     }
     @PostMapping("/updateListing/{carID}")
     public Car updateCar(@PathVariable @Min(1) Long carID, @RequestBody Car car){
+        logger.info(" Listing "+carID+" Updated");
         return carServices.updateCar(carID,car);
     }
 
