@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.*;
 
 @Entity
 public class Car {
@@ -11,11 +12,17 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty(message = "Please provide the Registration Number")
     private String	registration;
+    @Min(value = 1900,message = "Please provide the valid Model Year")
+    @Max(value = 2021,message = "Please provide the valid Model Year")
     private Integer	year;
+    @NotEmpty(message = "Please provide the manufacturer name")
     private String	make;
+    @NotEmpty(message = "Please provide the model name")
     private String carModel;
     private String	colour;
+    @DecimalMin(value = "0.0", message = "Please provide offer price")
     private Double price;
 
     public Long getId() {

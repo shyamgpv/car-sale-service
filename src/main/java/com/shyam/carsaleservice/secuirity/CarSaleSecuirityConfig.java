@@ -45,7 +45,7 @@ public class CarSaleSecuirityConfig extends WebSecurityConfigurerAdapter {
                .antMatchers("/car/get*/*","/car/user").hasAnyRole("USER","ADMIN")
                .antMatchers("/","/car","/car/message").permitAll()
                .and().formLogin()
-               .loginProcessingUrl("/user_login");
+               .loginProcessingUrl("/user_login").defaultSuccessUrl("/car/user", true);
     }
     @Bean
     public HttpFirewall configHttpFirewall(){

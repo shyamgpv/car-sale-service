@@ -3,12 +3,16 @@ package com.shyam.carsaleservice.controller;
 import com.shyam.carsaleservice.entities.Car;
 import com.shyam.carsaleservice.services.CarServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@Validated
 @RequestMapping("/car")
 public class CarController {
     @Autowired
@@ -27,20 +31,20 @@ public class CarController {
         return "admin logged in";
     }
     @PostMapping("/addListing")
-    public Car addCar(@RequestBody Car car){
+    public Car addCar(@Valid @RequestBody Car car){
         return carServices.addCar(car);
     }
     @PostMapping("/updateListing/{carID}")
-    public Car updateCar(@PathVariable Long carID,@RequestBody Car car){
+    public Car updateCar(@PathVariable @Min(1) Long carID, @RequestBody Car car){
         return carServices.updateCar(carID,car);
     }
 
     @GetMapping("/getListing/{carID}")
-    public Car getCar(@PathVariable Long carID){
+    public Car getCar(@PathVariable @Min(1) Long carID){
         return carServices.getCar(carID);
     }
-    @GetMapping("/deleteListing/{carID}")
-    public String deleteCar(@PathVariable Long carID){
+    @DeleteMapping("/deleteListing/{carID}")
+    public String deleteCar(@PathVariable @Min(1) Long carID){
         return carServices.deleteCar(carID);
     }
 

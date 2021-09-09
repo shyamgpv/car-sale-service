@@ -22,13 +22,19 @@ public class CarServices {
     }
     public Car updateCar(Long carID,Car car){
         Car existingCar = getCar(carID);
-        try {
-        existingCar.setRegistration(car.getRegistration());
-        existingCar.setYear(car.getYear());
-        existingCar.setMake(car.getMake());
-        existingCar.setCarModel(car.getCarModel());
-        existingCar.setColour(car.getColour());
-        existingCar.setPrice(car.getPrice());
+        try { // conditions added to prevent values going empty
+            if(car.getRegistration() != null && car.getRegistration().length() != 0)
+                existingCar.setRegistration(car.getRegistration());
+            if(car.getYear() != null && car.getYear() >= 1900 && car.getYear() <= 2021)
+                existingCar.setYear(car.getYear());
+            if(car.getMake() != null && car.getMake().length() != 0)
+                existingCar.setMake(car.getMake());
+            if(car.getCarModel() != null && car.getCarModel().length() != 0)
+                existingCar.setCarModel(car.getCarModel());
+            if(car.getColour() != null && car.getColour().length() != 0)
+                existingCar.setColour(car.getColour());
+            if(car.getPrice() != null && car.getPrice() > 0)
+                existingCar.setPrice(car.getPrice());
         } catch(Exception e){
             throw new NullPointerException(e.getMessage());
         }
@@ -67,15 +73,5 @@ public class CarServices {
         return "Lisitng deleted";
     }
 
-    @ControllerAdvice
-    public class CustomErrorHandler {
-        @ExceptionHandler(NullPointerException.class)
-        public String handlerNullPointException(NullPointerException exception,ServletWebRequest webRequest) throws NullPointerException {
-          return "Listing do not exist. Please check the ID given";
-        }
-        @ExceptionHandler(IllegalArgumentException.class)
-        public void handlerIllegalArgumentException(IllegalArgumentException exception, ServletWebRequest webRequest) throws IOException {
-            webRequest.getResponse().sendError(HttpStatus.BAD_REQUEST.value(), exception.getMessage());
-        }
-    }
+
 }
