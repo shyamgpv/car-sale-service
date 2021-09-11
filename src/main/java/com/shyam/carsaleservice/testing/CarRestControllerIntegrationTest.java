@@ -38,7 +38,7 @@ public class CarRestControllerIntegrationTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
     }
 
-    @WithMockUser( roles = "ADMIN")
+    @WithMockUser( roles = "ADMIN") //test adding a listing using ADMIN role
     @Test
     public void postMethodToCreateCar() throws Exception{
        Car car = new Car();
@@ -58,7 +58,7 @@ public class CarRestControllerIntegrationTest {
     }
     @WithMockUser( roles = "USER")
     @Test
-    public void getMethodToCreateCar() throws Exception{
+    public void getMethodToCreateCar() throws Exception{ //test getting a listing using USER role
 
 
         MvcResult res = mockMvc.perform(get("/car/getListing/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
