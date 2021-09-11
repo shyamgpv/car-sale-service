@@ -12,7 +12,7 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "Please provide the Registration Number")
+    @NotEmpty(message = "Please provide the Registration Number") //mandatory registration validation
     private String	registration;
     @Min(value = 1900,message = "Please provide the valid Model Year")
     @Max(value = 2021,message = "Please provide the valid Model Year")
@@ -24,6 +24,8 @@ public class Car {
     private String	colour;
     @DecimalMin(value = "0.0", message = "Please provide offer price")
     private Double price;
+
+//getters and setters
 
     public Long getId() {
         return id;

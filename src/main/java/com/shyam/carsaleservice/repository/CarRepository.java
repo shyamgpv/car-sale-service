@@ -15,7 +15,7 @@ public interface CarRepository extends JpaRepository<Car,Long> {
     List getCarByYear(Integer year);
     List getCarByYearBetween(Integer startYear,Integer endYear);
     List getCarByColour(String colour);
-    List getCarByPriceBetween(double startPrice,double endPrice);
+    List getCarByPriceBetween(double startPrice,double endPrice); //repository method to get search in range
     List getCarByRegistration(String registration);
 
 }

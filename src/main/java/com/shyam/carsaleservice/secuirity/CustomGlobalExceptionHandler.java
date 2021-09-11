@@ -21,8 +21,8 @@ import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
-    //error handler for validation
 
+    // custom error handler for validation
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         Map<String, Object> body = new LinkedHashMap<>();
@@ -41,6 +41,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return new ResponseEntity<>(body, headers, status);
     }
 
+    // custom error handler for exceptions
     @ExceptionHandler(ConstraintViolationException.class)
     public void constraintViolationException(HttpServletResponse response) throws IOException {
         response.sendError(HttpStatus.BAD_REQUEST.value());

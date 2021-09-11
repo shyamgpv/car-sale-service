@@ -17,6 +17,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 
+//2 users "admin" and "user" with 2 User Roles "ADMIN" and "USER"
+
 @EnableWebSecurity
 public class CarSaleSecuirityConfig extends WebSecurityConfigurerAdapter {
     @Override
@@ -24,11 +26,11 @@ public class CarSaleSecuirityConfig extends WebSecurityConfigurerAdapter {
         //config to auth
         auth.inMemoryAuthentication()
                 .withUser("admin")
-                .password("$2a$12$STuJIuKp/P3APKspTLGgQuGInkjmdqeASAJB63yna9BoWX6iR8WAO")
+                .password("$2a$12$STuJIuKp/P3APKspTLGgQuGInkjmdqeASAJB63yna9BoWX6iR8WAO") //BCryptPasswordEncoder
                 .roles("ADMIN")
                 .and()
                 .withUser("user")
-                .password("$2a$12$wFipgdMtcjaEpqSaff0rl.g838PmBv.OrE.YwJBvFX6VOzzYq74ti")
+                .password("$2a$12$wFipgdMtcjaEpqSaff0rl.g838PmBv.OrE.YwJBvFX6VOzzYq74ti") //BCryptPasswordEncoder
                 .roles("USER");
 
 
@@ -41,20 +43,20 @@ public class CarSaleSecuirityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
        http.csrf().disable().authorizeRequests()
-               .antMatchers("/car/addListing","/car/deleteListing/*","/car/deleteListing/*","/car/admin").hasRole("ADMIN")
+               .antMatchers("/car/addListing","/car/deleteListing/*","/car/deleteListing/*","/car/admin").hasRole("ADMIN") //most restrictive pages to least restrictive
                .antMatchers("/car/get*/*","/car/user").hasAnyRole("USER","ADMIN")
                .antMatchers("/","/car","/car/message").permitAll()
                .and().formLogin()
-               .loginProcessingUrl("/user_login").defaultSuccessUrl("/car/user", true);
+               .loginProcessingUrl("/user_login").defaultSuccessUrl("/car/user", true); //shows "user logged in" message
     }
     @Bean
     public HttpFirewall configHttpFirewall(){
         StrictHttpFirewall firewall = new StrictHttpFirewall();
-        firewall.setAllowedHttpMethods(Arrays.asList("GET","POST"));
+        firewall.setAllowedHttpMethods(Arrays.asList("GET","POST")); //firewall config to pass only get and post
         return firewall;
     }
     @Bean
-    public AccessDeniedHandler accessDeniedHandler(){
+    public AccessDeniedHandler accessDeniedHandler(){ //custom messaging for access denied
         return (request,response,ex)->{
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);

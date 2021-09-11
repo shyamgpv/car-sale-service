@@ -33,14 +33,14 @@ public class ServiceConfigurations {
     @Order(SwaggerPluginSupport.SWAGGER_PLUGIN_ORDER)
     public ApiListingBuilderPlugin getApiPathEnrichPlugin() {
         return new ApiListingBuilderPlugin() {
-            @Override
+            @Override                                            //get listing use same url handle for different input. Override context to differentiate in swagger
             public void apply(ApiListingContext apiListingContext) {
                 List<ApiDescription> apis = apiListingContext.apiListingBuilder().build().getApis();
                 List builder = new ArrayList();
                 if (apis != null) {
                     apis.forEach(api -> {
                         builder.add(new ApiDescription(api.getGroupName().get(),
-                                api.getPath() + "?apiDescription=" + api.getDescription(),
+                                api.getPath() + "?apiDescription=" + api.getDescription(), //Add a description to differentiate Api handles
                                 "",
                                 api.getDescription(),
                                 api.getOperations(),
