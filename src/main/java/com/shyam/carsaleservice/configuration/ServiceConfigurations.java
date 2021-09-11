@@ -20,6 +20,7 @@ import java.util.List;
 @EnableSwagger2
 public class ServiceConfigurations {
 
+
     @Bean
     public Docket carListingApi(){
         return new Docket(DocumentationType.SWAGGER_2)
