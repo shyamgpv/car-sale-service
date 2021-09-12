@@ -1,0 +1,18 @@
+Project Scope
+Java Spring Boot microservice to provide an API interface to a vehicle listing resource 
+
+Details
+•	REST resource for a vehicle listing (create, update, delete, get and find/search).
+•	The vehicle listing resource containing the following properties: 
+o	Registration (mandatory)
+o	Year
+o	Make
+o	Model
+o	Colour
+o	Price
+•	Find/search endpoint filtering on all properties; price and year a searchable range.
+•	Spring boot security over the endpoints. 2 users and 2 user profiles
+•	H2 in-memory database to store the vehicle listing resources
+•	API/Swagger.
+•	Integration testing for get and set APIs
+
