@@ -43,7 +43,7 @@ public class CarSaleSecuirityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
        http.csrf().disable().authorizeRequests()
-               .antMatchers("/car/addListing","/car/deleteListing/*","/car/deleteListing/*","/car/admin").hasRole("ADMIN") //most restrictive pages to least restrictive
+               .antMatchers("/car/addListing","/car/updateListing/*","/car/deleteListing/*","/car/admin").hasRole("ADMIN") //most restrictive pages to least restrictive
                .antMatchers("/car/get*/*","/car/user").hasAnyRole("USER","ADMIN")
                .antMatchers("/","/car","/car/message").permitAll()
                .and().formLogin()
