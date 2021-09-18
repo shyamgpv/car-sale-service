@@ -4,6 +4,7 @@ import com.shyam.carsaleservice.entities.Car;
 import com.shyam.carsaleservice.repository.CarRepository;
 import com.shyam.carsaleservice.secuirity.MyCustomErrorDTO;
 import com.shyam.carsaleservice.secuirity.SecurityEscape;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -92,24 +93,25 @@ public class CarServices {
 
 
     public MyCustomErrorDTO addCars(ArrayList<Car> cars) {
+        Integer count = 0;
+     try {
+         cars.forEach((car) -> {
+             addCar(car);
+         });
+     }catch (Exception e){
+         return  new MyCustomErrorDTO( // prepare a success statement
+                 400,
+                 "Data not valid",
+                 false
+         );
+     }
 
-        cars.forEach((car) -> {
-            try {
-                Car carRes = addCar(car);
-            }catch (Exception e){
-                MyCustomErrorDTO message = new MyCustomErrorDTO(
-                        400,
-                        "Data not valid",
-                        false
-                );
 
-            }
-        });
-
-        MyCustomErrorDTO message = new MyCustomErrorDTO(
+        return new MyCustomErrorDTO(
                 200,
                 "cars added",
                 true
+
         );
     }
 }
