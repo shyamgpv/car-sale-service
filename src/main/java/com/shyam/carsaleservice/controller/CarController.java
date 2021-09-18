@@ -1,6 +1,7 @@
 package com.shyam.carsaleservice.controller;
 
 import com.shyam.carsaleservice.entities.Car;
+import com.shyam.carsaleservice.secuirity.MyCustomErrorDTO;
 import com.shyam.carsaleservice.services.CarServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +45,10 @@ public class CarController {
     public Car addCar(@Valid @RequestBody Car car){
         logger.info("New Listing "+car.getYear()+" "+car.getMake()+" "+car.getCarModel()+" added");
         return carServices.addCar(car);
+    }
+    @PostMapping("/addListings")
+    public MyCustomErrorDTO addCars(@Valid @RequestBody ArrayList<Car> cars){
+        return carServices.addCars(cars);
     }
     @PostMapping("/updateListing/{carID}")
     public Car updateCar(@PathVariable @Min(1) Long carID, @RequestBody Car car){
