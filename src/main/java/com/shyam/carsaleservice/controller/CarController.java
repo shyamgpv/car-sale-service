@@ -1,6 +1,7 @@
 package com.shyam.carsaleservice.controller;
 
 import com.shyam.carsaleservice.entities.Car;
+import com.shyam.carsaleservice.secuirity.MyCustomErrorDTO;
 import com.shyam.carsaleservice.services.CarServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -33,6 +34,10 @@ public class CarController {
     @PostMapping("/addListing")
     public Car addCar(@Valid @RequestBody Car car){
         return carServices.addCar(car);
+    }
+    @PostMapping("/addListings")
+    public MyCustomErrorDTO addCars(@Valid @RequestBody ArrayList<Car> cars){
+        return carServices.addCars(cars);
     }
     @PostMapping("/updateListing/{carID}")
     public Car updateCar(@PathVariable @Min(1) Long carID, @RequestBody Car car){
