@@ -1,11 +1,8 @@
 package com.shyam.carsaleservice.services;
 
 import com.shyam.carsaleservice.entities.Car;
-import com.shyam.carsaleservice.entities.CarListDTO;
 import com.shyam.carsaleservice.repository.CarRepository;
-import com.shyam.carsaleservice.secuirity.MyCustomErrorDTO;
 import com.shyam.carsaleservice.secuirity.SecurityEscape;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +26,11 @@ public class CarServices {
         cleanCar.setRegistration(SecurityEscape.cleanIt(car.getRegistration()));
         cleanCar.setPrice(SecurityEscape.cleanDouble(car.getPrice()));
         cleanCar.setYear(SecurityEscape.cleanInt(car.getYear()));
-
-        return carRepository.save(cleanCar);
+        try {
+            return carRepository.save(cleanCar);
+        }catch (Exception e){
+            throw e;
+        }
     }
 
     public Car updateCar(Long carID,Car car){
@@ -61,70 +61,114 @@ public class CarServices {
         } catch(Exception e){
             throw new NullPointerException(e.getMessage());
         }
-        return carRepository.save(existingCar);
+       try {
+           return carRepository.save(existingCar);
+        }catch (Exception e){
+            throw e;
+        }
     }
 
     public List getCarByCarModel(String carModel){
-        return carRepository.getCarByCarModel(SecurityEscape.cleanIt(carModel));
+      try {
+          return carRepository.getCarByCarModel(SecurityEscape.cleanIt(carModel));
+        }catch (Exception e){
+            throw e;
+        }
 
     }
 
     public List getCarByMake(String make) {
-        return carRepository.getCarByMake(SecurityEscape.cleanIt(make));
+      try {
+          return carRepository.getCarByMake(SecurityEscape.cleanIt(make));
+        }catch (Exception e){
+            throw e;
+        }
     }
 
     public List getCarByYear(Integer year) {
-        return carRepository.getCarByYear(SecurityEscape.cleanInt(year));
+      try {
+          return carRepository.getCarByYear(SecurityEscape.cleanInt(year));
+      }catch (Exception e){
+            throw e;
+        }
     }
 
     public List getCarByYearBetween(Integer startYear,Integer endYear) {
-        return carRepository.getCarByYearBetween(SecurityEscape.cleanInt(startYear),SecurityEscape.cleanInt(endYear));
+       try {
+           return carRepository.getCarByYearBetween(SecurityEscape.cleanInt(startYear),SecurityEscape.cleanInt(endYear));
+       }catch (Exception e){
+            throw e;
+        }
     }
 
     public List getCarByColour(String colour) {
-        return carRepository.getCarByColour(SecurityEscape.cleanIt(colour));
+
+        try {
+            return carRepository.getCarByColour(SecurityEscape.cleanIt(colour));
+        }catch (Exception e){
+            throw e;
+        }
     }
 
     public List getCarByPriceBetween(double startPrice,double endPrice) {
-        return carRepository.getCarByPriceBetween(SecurityEscape.cleanDouble(startPrice),SecurityEscape.cleanDouble(endPrice));
+
+        try {
+            return carRepository.getCarByPriceBetween(SecurityEscape.cleanDouble(startPrice),SecurityEscape.cleanDouble(endPrice));
+        }catch (Exception e){
+            throw e;
+        }
     }
 
     public List getCarByRegistration(String registration) {
-        return carRepository.getCarByRegistration(SecurityEscape.cleanIt(registration));
+
+        try {
+            return carRepository.getCarByRegistration(SecurityEscape.cleanIt(registration));
+        }catch (Exception e){
+            throw e;
+        }
     }
 
     public Car getCar(Long carID){
-
-        return carRepository.findCarById(SecurityEscape.cleanLong(carID));
+        try {
+            return carRepository.findCarById(SecurityEscape.cleanLong(carID));
+        }catch (Exception e){
+            throw e;
+        }
     }
 
     public String deleteCar(Long carID){
 
-        carRepository.deleteById(SecurityEscape.cleanLong(carID));
-        return "Lisitng deleted";
+        try {
+            carRepository.deleteById(SecurityEscape.cleanLong(carID));
+            return "Listing deleted";
+        }catch (Exception e){
+            throw e;
+        }
     }
 
 
-    public MyCustomErrorDTO addCars(List<Car> cars) {
-        Integer count = 0;
+    public List addCars(List<Car> cars) {
+        List<Car> cleanCars = new ArrayList<Car>();
      try {
-         cars.forEach((car) -> {
-             addCar(car);
-         });
+         for (Car car: cars)
+         {
+             Car cleanCar = new Car();
+
+             cleanCar.setMake(SecurityEscape.cleanIt(car.getMake()));
+             cleanCar.setCarModel(SecurityEscape.cleanIt(car.getCarModel()));
+             cleanCar.setColour(SecurityEscape.cleanIt(car.getColour()));
+             cleanCar.setRegistration(SecurityEscape.cleanIt(car.getRegistration()));
+             cleanCar.setPrice(SecurityEscape.cleanDouble(car.getPrice()));
+             cleanCar.setYear(SecurityEscape.cleanInt(car.getYear()));
+             cleanCars.add(cleanCar);
+         }
+
+         return carRepository.saveAll(cleanCars);
+
      }catch (Exception e){
-         return  new MyCustomErrorDTO( // prepare a success statement
-                 400,
-                 "Data not valid",
-                 false
-         );
+       throw e;
      }
 
 
-        return new MyCustomErrorDTO(
-                200,
-                "cars added",
-                true
-
-        );
     }
 }

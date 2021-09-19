@@ -2,11 +2,14 @@ package com.shyam.carsaleservice.controller;
 
 import com.shyam.carsaleservice.entities.Car;
 import com.shyam.carsaleservice.entities.CarListDTO;
+import com.shyam.carsaleservice.response.ResponseHandler;
 import com.shyam.carsaleservice.secuirity.MyCustomErrorDTO;
 import com.shyam.carsaleservice.services.CarServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
@@ -43,30 +46,62 @@ public class CarController {
         return "admin logged in";
     }
     @PostMapping("/addListing")
-    public Car addCar(@Valid @RequestBody Car car){
+    public ResponseEntity<Object> addCar(@Valid @RequestBody Car car){
         logger.info("New Listing "+car.getYear()+" "+car.getMake()+" "+car.getCarModel()+" added");
-        return carServices.addCar(car);
+        carServices.addCar(car);
+        return ResponseHandler.generateResponse("Successfully added data!", HttpStatus.OK, null);
     }
     @PostMapping("/addListings")
     @ResponseBody
-    public MyCustomErrorDTO addCars(@RequestBody List<Car> cars){
+    public ResponseEntity<Object> addCars(@RequestBody List<Car> cars){
         System.out.println("Data valid "+cars.size());
-
-        return carServices.addCars(cars);
+        try {
+            List res = carServices.addCars(cars);
+            return ResponseHandler.generateResponse("Successfully added data!", HttpStatus.OK, res);
+        }
+        catch (Exception e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
     }
+
+
     @PostMapping("/updateListing/{carID}")
-    public Car updateCar(@PathVariable @Min(1) Long carID, @RequestBody Car car){
+    public ResponseEntity<Object> updateCar(@PathVariable @Min(1) Long carID, @RequestBody Car car){
         logger.info(" Listing "+carID+" Updated");
-        return carServices.updateCar(carID,car);
+        try{
+         carServices.updateCar(carID,car);
+         return ResponseHandler.generateResponse("Successfully updated Listing "+carID, HttpStatus.OK, null);
+        }
+        catch (Exception e) {
+         return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
     }
 
     @GetMapping("/getListing/{carID}")
-    public Car getCar(@PathVariable @Min(1) Long carID){
-        return carServices.getCar(carID);
+    public ResponseEntity<Object> getCar(@PathVariable @Min(1) Long carID){
+
+        try{
+            Car result = carServices.getCar(carID);
+            if(result != null)
+                return ResponseHandler.generateResponse("Retrieved listing "+carID, HttpStatus.OK, result);
+            else
+                return ResponseHandler.generateResponse("Unable to retrieve data", HttpStatus.BAD_REQUEST, null);
+        }
+        catch (Exception e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
     }
+
     @DeleteMapping("/deleteListing/{carID}")
-    public String deleteCar(@PathVariable @Min(1) Long carID){
-        return carServices.deleteCar(carID);
+    public ResponseEntity<Object> deleteCar(@PathVariable @Min(1) Long carID){
+
+        try{
+            String res =carServices.deleteCar(carID);
+            return ResponseHandler.generateResponse("Successfully deleted Listing "+carID, HttpStatus.OK, null);
+        }
+        catch (Exception e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+        }
     }
 
     @GetMapping(value="/getListings",params = "make")
