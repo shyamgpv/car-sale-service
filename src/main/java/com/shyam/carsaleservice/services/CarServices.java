@@ -1,6 +1,7 @@
 package com.shyam.carsaleservice.services;
 
 import com.shyam.carsaleservice.entities.Car;
+import com.shyam.carsaleservice.entities.CarListDTO;
 import com.shyam.carsaleservice.repository.CarRepository;
 import com.shyam.carsaleservice.secuirity.MyCustomErrorDTO;
 import com.shyam.carsaleservice.secuirity.SecurityEscape;
@@ -104,7 +105,7 @@ public class CarServices {
     }
 
 
-    public MyCustomErrorDTO addCars(ArrayList<Car> cars) {
+    public MyCustomErrorDTO addCars(List<Car> cars) {
         Integer count = 0;
      try {
          cars.forEach((car) -> {
