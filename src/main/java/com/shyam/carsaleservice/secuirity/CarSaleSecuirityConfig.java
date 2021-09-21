@@ -100,7 +100,7 @@ public class CarSaleSecuirityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public HttpFirewall configHttpFirewall(){
         StrictHttpFirewall firewall = new StrictHttpFirewall();
-        firewall.setAllowedHttpMethods(Arrays.asList("GET","POST")); //firewall config to pass only get and post
+        firewall.setAllowedHttpMethods(Arrays.asList("GET","POST","DELETE")); //firewall config to pass only get and post
         return firewall;
     }
     @Bean
