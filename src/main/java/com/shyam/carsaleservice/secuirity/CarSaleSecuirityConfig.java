@@ -1,7 +1,10 @@
 package com.shyam.carsaleservice.secuirity;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.shyam.carsaleservice.controller.CarController;
 import com.shyam.carsaleservice.response.ResponseHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,6 +34,9 @@ import java.util.Arrays;
 
 @EnableWebSecurity
 public class CarSaleSecuirityConfig extends WebSecurityConfigurerAdapter {
+
+    Logger logger = LoggerFactory.getLogger(CarController.class);
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         //config to auth
@@ -42,9 +48,8 @@ public class CarSaleSecuirityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("user")
                 .password("$2a$12$wFipgdMtcjaEpqSaff0rl.g838PmBv.OrE.YwJBvFX6VOzzYq74ti") //BCryptPasswordEncoder
                 .roles("USER");
-
-
     }
+
     @Bean
     public PasswordEncoder getPasswordEncoder(){
         return new BCryptPasswordEncoder(12);
@@ -68,6 +73,8 @@ public class CarSaleSecuirityConfig extends WebSecurityConfigurerAdapter {
                         String username = userDetails.getUsername();
 
                         System.out.println("The user " + username + " has logged in.");
+                        logger.info("The user " + username + " has logged in.");
+
                         ObjectMapper JsonUtil = new ObjectMapper();
                         //response.sendRedirect(request.getContextPath());
                         response.setContentType("application/json");
@@ -85,10 +92,11 @@ public class CarSaleSecuirityConfig extends WebSecurityConfigurerAdapter {
 
                    }
 
-               }) //shows "user logged in" message
+               })
                  .and()
                  .logout().logoutUrl("/logout");
     }
+
     @Bean
     public HttpFirewall configHttpFirewall(){
         StrictHttpFirewall firewall = new StrictHttpFirewall();
